@@ -2,6 +2,8 @@
 # usage: display_fits_images.py filename_template angle_min,angle_max,delta_angle cmin,cmax
 # display_fits_images.py data/February_25/2014*_CT*_%07.3f_*.fits 0,180,30 0,3000
 
+maxN = 11
+
 from astropy.io import fits
 import os, sys, numpy as np, pylab, glob
 
@@ -31,6 +33,9 @@ def iterPaths():
     
 paths = getPaths()
 N = len(paths)
+if N > maxN:
+    raise RuntimeError("too many images")
+
 cols = int(np.sqrt(N)) + 1
 rows = int(np.ceil(1.*N/cols))
 
