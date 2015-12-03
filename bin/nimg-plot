@@ -4,11 +4,11 @@ __doc__ = """
 Plot images in a image series.
 
 Usage:
-  pltimgs random <N> [options]
-  pltimgs sequence <min_angle> <max_angle> <angle_step> [options]
-  pltimgs manual <angle> [<angle>...] [options]
-  pltimgs -h | --help
-  pltimgs --version
+  nimg-plot random <N> [options]
+  nimg-plot sequence <min_angle> <max_angle> <angle_step> [options]
+  nimg-plot manual <angle> [<angle>...] [options]
+  nimg-plot -h | --help
+  nimg-plot --version
 
 Options:
   -h --help                      Show this screen.
