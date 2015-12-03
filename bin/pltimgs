@@ -6,7 +6,7 @@ Plot images in a image series.
 Usage:
   pltimgs random <N> [options]
   pltimgs sequence <min_angle> <max_angle> <angle_step> [options]
-  pltimgs <angle> [<angle>...] [options]
+  pltimgs manual <angle> [<angle>...] [options]
   pltimgs -h | --help
   pltimgs --version
 
@@ -33,9 +33,13 @@ def main():
     else:
         if args['random']: 
             N = eval(args["<N>"])
-            angles = random(N)
+            import random
+            angles = random.sample(imageseries.angles, N)
         elif args['sequence']:
-            angles = sequence(imgseries)
+            min_angle = eval(args['<min_angle>'])
+            max_angle = eval(args['<max_angle>'])
+            angle_step = eval(args['<angle_step>'])
+            angles = np.arange(min_angle, max_angle, angle_step)
         else:
             raise RuntimeError
     c = args['--colorlimits']
@@ -66,7 +70,7 @@ def plot(angles, imageseries, c):
     plt.figure(1)
     for index, path in enumerate(paths):
         print path
-        plt.subplot(rows, cols, index)
+        plt.subplot(rows, cols, index+1)
         angle = angles[index]
         img = imageseries.getData(angle)
         # plot
