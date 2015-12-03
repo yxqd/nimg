@@ -12,14 +12,17 @@ class ImageSeries:
     
         
     def getFilename(self, angle):
-        path_pattern = filename_template % (angle,)
-        base, ext = os.path.splitext(path_pattern)
+        path_pattern = self.filename_template % (angle,)
+        dir = os.path.dirname(path_pattern)
+        basename = os.path.basename(path_pattern)
+        base, ext = os.path.splitext(basename)
         # bad code
-        path_pattern = base.replace(".", "_") + ext
+        path_pattern = os.path.join(dir, base.replace(".", "_") + ext)
         
         paths = glob.glob(path_pattern)
         if len(paths)!=1:
-            raise RuntimeError, "template %r no good" % filename_template
+            raise RuntimeError, "template %r no good: \npath_pattern=%r" % (
+                self.filename_template, path_pattern)
     
         path = paths[0]
         return path

@@ -6,29 +6,41 @@ Plot images in a image series.
 Usage:
   pltimgs random <N> [options]
   pltimgs sequence <min_angle> <max_angle> <angle_step> [options]
+  pltimgs <angle> [<angle>...] [options]
   pltimgs -h | --help
   pltimgs --version
 
 Options:
   -h --help                      Show this screen.
   --version                      Show version.
-  -p <p>, --filenamepattern=<p>  Filename pattern for the image series
+  -s <s>, --imageseries=<s>      Yaml configuration for the image series
+  -c <c>, --colorlimits=<c>      limits of color (z) axis: cmin,cmax
 """
+
+maxN = 20
 
 def main():
     import docopt
     args = docopt.docopt(__doc__)
     print args
-    p = args['--filenamepattern']
-    from nimg.io import ImageSeries
-    imgseries = ImageSeries(filename_template=p)
-    N = eval(args["<N>"])
-    if args['random']: 
-        random(imgseries)
-    elif args['sequence']:
-        sequence(imgseries)
+    isconfig = args['--imageseries']
+    import nimg.config.imageseries as nci
+    imageseries = nci.load(isconfig)
+    
+    angles = args['<angle>']
+    if angles:
+        angles = map(float, angles)
     else:
-        raise RuntimeError
+        if args['random']: 
+            N = eval(args["<N>"])
+            angles = random(N)
+        elif args['sequence']:
+            angles = sequence(imgseries)
+        else:
+            raise RuntimeError
+    c = args['--colorlimits']
+    c = eval(c)
+    plot(angles, imageseries, c)
     return
 
 
@@ -38,27 +50,29 @@ def sequence(args):
 def random(rags):
     return
     
+import numpy as np, pylab
 
-def plot(paths):
+def plot(angles, imageseries, c):
+    cmin, cmax = c
+    paths = [imageseries.getFilename(angle) for angle in angles]
     # compute layout
     N = len(paths)
     if N > maxN:
         raise RuntimeError("too many images")
-    cols = int(np.sqrt(N)) + 1
+    cols = min(int(np.sqrt(N)) + 1, N)
     rows = int(np.ceil(1.*N/cols))
     # plot
     import matplotlib.pyplot as plt
     plt.figure(1)
     for index, path in enumerate(paths):
-        plt.subplot(rows, cols, index)
         print path
-        f = fits.open(path)
-        img = f[0].data
-        
+        plt.subplot(rows, cols, index)
+        angle = angles[index]
+        img = imageseries.getData(angle)
+        # plot
         pylab.imshow(img)
         # pylab.colorbar()
         pylab.clim(cmin, cmax)
-        del f
         continue
     pylab.show()
     return
