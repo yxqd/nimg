@@ -40,14 +40,35 @@ class ImageFile:
 
 
     def getData(self):
-        fn, ext = os.path.splitext(self.path)
-        handler = 'handle_' + ext[1:]
-        return getattr(self, handler)()
-
+        io = self._getIO()
+        return io.load(self.path)
         
-    def handle_fits(self):
+        
+    def save(self):
+        io = self._getIO()
+        return
+        
+
+    def _getIO(self):
+        fn, ext = os.path.splitext(self.path)
+        return eval(ext[1:].capitalize() + "ImageIO")
+
+
+class AbstractImageFileIO:
+    
+    @classmethod
+    def load(cls, path): raise NotImplementedError
+    
+    @classmethod
+    def dump(cls, data, path): raise NotImplementedError
+
+
+class FitsImageIO:
+    
+    @classmethod
+    def load(cls, path):
         from astropy.io import fits
-        f = fits.open(self.path)
+        f = fits.open(path)
         d = f[0].data
         f.close()
         return d
