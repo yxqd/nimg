@@ -1,4 +1,3 @@
-from astropy.io import fits
 import os, sys, numpy as np, pylab, glob
 
 
@@ -30,5 +29,25 @@ class ImageSeries:
     
     def getData(self, angle):
         path = self.getFilename(angle)
-        f = fits.open(path)
-        return f[0].data
+        return ImageFile(path).getData()
+
+
+class ImageFile:
+
+    def __init__(self, path):
+        self.path = path
+        return
+
+
+    def getData(self):
+        fn, ext = os.path.splitext(self.path)
+        handler = 'handle_' + ext[1:]
+        return getattr(self, handler)()
+
+        
+    def handle_fits(self):
+        from astropy.io import fits
+        f = fits.open(self.path)
+        d = f[0].data
+        f.close()
+        return d
