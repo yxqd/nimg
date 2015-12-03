@@ -1,0 +1,4 @@
+nimg-plot manual 0 --imageseries=imageseries.yml --colorlimits=0,3000
+nimg-plot manual 0 3 3.3 --imageseries=imageseries.yml --colorlimits=0,3000
+nimg-plot random 5 --imageseries=imageseries.yml --colorlimits=0,3000
+nimg-plot sequence 0 180 30 --imageseries=imageseries.yml --colorlimits=0,3000

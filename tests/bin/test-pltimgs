@@ -1,4 +1,0 @@
-pltimgs manual 0 --imageseries=imageseries.yml --colorlimits=0,3000
-pltimgs manual 0 3 3.3 --imageseries=imageseries.yml --colorlimits=0,3000
-pltimgs random 5 --imageseries=imageseries.yml --colorlimits=0,3000
-pltimgs sequence 0 180 30 --imageseries=imageseries.yml --colorlimits=0,3000
