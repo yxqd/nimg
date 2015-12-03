@@ -1,0 +1,45 @@
+#!/usr/bin/env python
+
+__doc__ = """
+Crop images in a image series.
+
+Usage:
+  nimg-crop <input-image-series> <output-image-pattern> <left> <right> <top> <bottom>
+  nimg-crop -h | --help
+  nimg-crop --version
+
+Options:
+  -h --help          Show this screen.
+  --version          Show version.
+"""
+
+def main():
+    import docopt
+    args = docopt.docopt(__doc__)
+    print args
+    
+    isconfig = args['<input-image-series>']
+    import nimg.config.imageseries as nci
+    imageseries = nci.load(isconfig)
+    
+    output_template = args['<output-image-pattern>']
+    
+    left = args['<left>']
+    right = args['<right>']
+    top = args['<top>']
+    bottom = args['<bottom>']
+    window = left,right,top,bottom
+    window = map(eval, window)
+    
+    from nimg.operators.preprocessing import crop
+    from nimg import ImageSeriesMappingOperator
+    op = ImageSeriesMappingOperator(
+        imageseries, 
+        operator = crop(window),
+        output_template = output_template,
+        )
+    op.run()
+    return
+
+
+if __name__ == '__main__': main()

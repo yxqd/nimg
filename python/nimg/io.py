@@ -8,6 +8,11 @@ class ImageSeries:
         self.filename_template = filename_template
         self.angles = angles
         return
+
+    
+    def getImageFile(self, angle):
+        p = self.getFilename(angle)
+        return ImageFile(p)
     
         
     def getFilename(self, angle):
@@ -46,6 +51,7 @@ class ImageFile:
         
     def save(self):
         io = self._getIO()
+        io.dump(self.data, self.path)
         return
         
 
@@ -72,3 +78,12 @@ class FitsImageIO:
         d = f[0].data
         f.close()
         return d
+
+
+class NpyImageIO:
+
+    @classmethod
+    def dump(cls, data, path):
+        import numpy as np
+        np.save(path, data)
+        return

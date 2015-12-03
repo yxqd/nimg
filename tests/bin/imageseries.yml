@@ -1,5 +1,5 @@
 filenamepattern: ../data/February_25/2014*_CT*_%07.3f_*.fits
 angles:
-  min: 0
-  max: 180
+  min: 30
+  max: 35
   step: .3

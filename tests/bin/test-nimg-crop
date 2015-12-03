@@ -1,0 +1,1 @@
+nimg-crop imageseries.yml cropped/%s.npy 10 200 10 150
