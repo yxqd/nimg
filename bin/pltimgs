@@ -1,0 +1,67 @@
+#!/usr/bin/env python
+
+__doc__ = """
+Plot images in a image series.
+
+Usage:
+  pltimgs random <N> [options]
+  pltimgs sequence <min_angle> <max_angle> <angle_step> [options]
+  pltimgs -h | --help
+  pltimgs --version
+
+Options:
+  -h --help                      Show this screen.
+  --version                      Show version.
+  -p <p>, --filenamepattern=<p>  Filename pattern for the image series
+"""
+
+def main():
+    import docopt
+    args = docopt.docopt(__doc__)
+    print args
+    p = args['--filenamepattern']
+    from nimg.io import ImageSeries
+    imgseries = ImageSeries(filename_template=p)
+    N = eval(args["<N>"])
+    if args['random']: 
+        random(imgseries)
+    elif args['sequence']:
+        sequence(imgseries)
+    else:
+        raise RuntimeError
+    return
+
+
+def sequence(args):
+    return
+
+def random(rags):
+    return
+    
+
+def plot(paths):
+    # compute layout
+    N = len(paths)
+    if N > maxN:
+        raise RuntimeError("too many images")
+    cols = int(np.sqrt(N)) + 1
+    rows = int(np.ceil(1.*N/cols))
+    # plot
+    import matplotlib.pyplot as plt
+    plt.figure(1)
+    for index, path in enumerate(paths):
+        plt.subplot(rows, cols, index)
+        print path
+        f = fits.open(path)
+        img = f[0].data
+        
+        pylab.imshow(img)
+        # pylab.colorbar()
+        pylab.clim(cmin, cmax)
+        del f
+        continue
+    pylab.show()
+    return
+
+
+if __name__ == '__main__': main()
