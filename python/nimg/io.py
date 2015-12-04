@@ -21,7 +21,7 @@ class ImageSeries:
         basename = os.path.basename(path_pattern)
         base, ext = os.path.splitext(basename)
         # bad code
-        path_pattern = os.path.join(dir, base.replace(".", "_") + ext)
+        path_pattern = os.path.join(dir, base.replace(".", "[_.]") + ext)
         
         paths = glob.glob(path_pattern)
         if len(paths)!=1:
@@ -87,3 +87,8 @@ class NpyImageIO:
         import numpy as np
         np.save(path, data)
         return
+
+    @classmethod
+    def load(cls, path):
+        import numpy as np
+        return np.load(path)
