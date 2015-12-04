@@ -1,0 +1,4 @@
+. ~/.use-anaconda
+DV_DIR=$HOME/dv/Imaging/nimg
+export PATH=$DV_DIR/bin:$PATH
+export PYTHONPATH=$DV_DIR/python:$PYTHONPATH
